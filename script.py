@@ -4,7 +4,7 @@ import sqlite3
 
 
 def a_h():
-    def process_file(filepath, output_file):
+    def process_file(filepath):
         # Функция для извлечения значений и записи их в файл
         with open(filepath, 'r') as file:
             content = file.read()
@@ -24,6 +24,9 @@ def a_h():
 
             # Вставляем запись в таблицу Materials
             try:
+                # Создаем подключение к базе данных SQLite
+                conn = sqlite3.connect('materials.db')
+                cursor = conn.cursor()
                 cursor.execute('''
                             INSERT INTO Materials (
                                 Prototype, TotalAtoms, FormulaUnit, FullFormulaUnit, TwoDCrystalSystem, LatticeConstants, 
@@ -43,21 +46,17 @@ def a_h():
     # Путь к файлу вывода
     output_file = 'a_h.txt'
 
-    # Очищаем содержимое файла вывода перед началом
-    with open(output_file, 'w') as out_file:
-        out_file.write('')
-
     # Рекурсивно обходим все файлы и папки в указанной директории
     for dirpath, dirnames, filenames in os.walk(root_dir):
         for filename in filenames:
             if filename == 'a_h':
                 file_path = os.path.join(dirpath, filename)
-                process_file(file_path, output_file)
+                process_file(file_path)
 
 
 def bands():
     # Функция для извлечения значений и записи их в файл
-    def process_bands_file(filepath, output_file):
+    def process_bands_file(filepath):
         with open(filepath, 'r') as file:
             content = file.read()
 
@@ -77,6 +76,9 @@ def bands():
 
             # Вставляем запись в таблицу Materials
         try:
+            # Создаем подключение к базе данных SQLite
+            conn = sqlite3.connect('materials.db')
+            cursor = conn.cursor()
             cursor.execute('''
                             INSERT INTO Materials (
                                 BandGap_eV, EigenvalueVBM_eV, EigenvalueCBM_eV, FermiEnergy_eV,
@@ -105,21 +107,17 @@ def bands():
     # Путь к файлу вывода
     output_file = 'bands.txt'
 
-    # Очищаем содержимое файла вывода перед началом
-    with open(output_file, 'w') as out_file:
-        out_file.write('')
-
     # Рекурсивно обходим все файлы и папки в указанной директории
     for dirpath, dirnames, filenames in os.walk(root_dir):
         for filename in filenames:
             if filename == 'bands':
                 file_path = os.path.join(dirpath, filename)
-                process_bands_file(file_path, output_file)
+                process_bands_file(file_path)
 
 
 def bands_nc():
     # Функция для извлечения значений и записи их в файл
-    def process_bands_nc_file(filepath, output_file):
+    def process_bands_nc_file(filepath):
         with open(filepath, 'r') as file:
             content = file.read()
 
@@ -134,6 +132,9 @@ def bands_nc():
             location_cbm = re.search(r'Location of CBM:\s*([\d.-]+)\s*([\d.-]+)\s*([\d.-]+)', content)
 
         try:
+            # Создаем подключение к базе данных SQLite
+            conn = sqlite3.connect('materials.db')
+            cursor = conn.cursor()
             # Вставляем запись в таблицу Materials
             cursor.execute('''
                 INSERT INTO Materials (
@@ -164,12 +165,12 @@ def bands_nc():
         for filename in filenames:
             if filename == 'bands_nc':
                 file_path = os.path.join(dirpath, filename)
-                process_bands_nc_file(file_path, output_file)
+                process_bands_nc_file(file_path)
 
 
 def energy_mag():
     # Функция для извлечения значений и записи их в файл
-    def process_energy_mag_file(filepath, output_file):
+    def process_energy_mag_file(filepath):
         with open(filepath, 'r') as file:
             content = file.read()
 
@@ -181,6 +182,9 @@ def energy_mag():
 
         # Вставляем запись в таблицу Materials
         try:
+            # Создаем подключение к базе данных SQLite
+            conn = sqlite3.connect('materials.db')
+            cursor = conn.cursor()
             cursor.execute('''
                             INSERT INTO Materials (
                                 F, E0, E, mag
@@ -196,21 +200,17 @@ def energy_mag():
     # Путь к файлу вывода
     output_file = 'energy_mag.txt'
 
-    # Очищаем содержимое файла вывода перед началом
-    with open(output_file, 'w') as out_file:
-        out_file.write('')
-
     # Рекурсивно обходим все файлы и папки в указанной директории
     for dirpath, dirnames, filenames in os.walk(root_dir):
         for filename in filenames:
             if filename == 'energy_mag':
                 file_path = os.path.join(dirpath, filename)
-                process_energy_mag_file(file_path, output_file)
+                process_energy_mag_file(file_path)
 
 
 def wf():
     # Функция для извлечения значений и записи их в файл
-    def process_wf_file(filepath, output_file):
+    def process_wf_file(filepath):
         with open(filepath, 'r') as file:
             content = file.read()
 
@@ -219,6 +219,9 @@ def wf():
             work_function = re.search(r'Work Function \(eV\):\s*([\d.]+)', content).group(1)
 
         try:
+            # Создаем подключение к базе данных SQLite
+            conn = sqlite3.connect('materials.db')
+            cursor = conn.cursor()
             # Вставляем запись в таблицу Materials
             cursor.execute('''
                         INSERT INTO Materials (
@@ -235,23 +238,15 @@ def wf():
     # Путь к файлу вывода
     output_file = 'wf.txt'
 
-    # Очищаем содержимое файла вывода перед началом
-    with open(output_file, 'w') as out_file:
-        out_file.write('')
-
     # Рекурсивно обходим все файлы и папки в указанной директории
     for dirpath, dirnames, filenames in os.walk(root_dir):
         for filename in filenames:
             if filename == 'wf':
                 file_path = os.path.join(dirpath, filename)
-                process_wf_file(file_path, output_file)
+                process_wf_file(file_path)
 
 
 if __name__ == "__main__":
-    # Создаем подключение к базе данных SQLite
-    conn = sqlite3.connect('materials.db')
-    cursor = conn.cursor()
-
     a_h()
     bands()
     bands_nc()
