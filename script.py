@@ -8,7 +8,7 @@ def a_h():
         # Функция для извлечения значений и записи их в файл
         with open(filepath, 'r') as file:
             content = file.read()
-
+            print(file.name)
             # Используем регулярные выражения для поиска значений
             prototype = re.search(r'Prototype:\s*(\w+)', content).group(1)
             total_atoms = re.search(r'Total-Atoms:\s*(\d+)', content).group(1)
@@ -22,20 +22,20 @@ def a_h():
             space_group = re.search(r'Space Group:\s*(\d+)', content).group(1)
             symmetry_operations = re.search(r'Symmetry Operations:\s*(\d+)', content).group(1)
 
-            # Записываем только значения в файл output_file
-            with open(output_file, 'a') as out_file:
-                out_file.write(f'{prototype}\n')
-                out_file.write(f'{total_atoms}\n')
-                out_file.write(f'{formula_unit}\n')
-                out_file.write(f'{full_formula_unit}\n')
-                out_file.write(f'{crystal_system}\n')
-                out_file.write(f'{lattice_constants}\n')
-                out_file.write(f'{lattice_angles}\n')
-                out_file.write(f'{layer_thickness}\n')
-                out_file.write(f'{international}\n')
-                out_file.write(f'{space_group}\n')
-                out_file.write(f'{symmetry_operations}\n')
-                out_file.write('\n')
+            # Вставляем запись в таблицу Materials
+            try:
+                cursor.execute('''
+                            INSERT INTO Materials (
+                                Prototype, TotalAtoms, FormulaUnit, FullFormulaUnit, TwoDCrystalSystem, LatticeConstants, 
+                                LatticeAngles, LayerThickness, International, SpaceGroup, SymmetryOperations
+                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                            ''',
+                               (prototype, total_atoms, formula_unit, full_formula_unit, crystal_system,
+                                lattice_constants,
+                                lattice_angles, layer_thickness, international, space_group, symmetry_operations))
+                print("Saved with no errors(a_h)")
+            except sqlite3.Error as e:
+                print(f"Error saving to database(a_h): {e}")
 
     # Папка, в которой нужно выполнять поиск
     root_dir = 'Base'
@@ -75,23 +75,29 @@ def bands():
             location_vbm_to = re.search(r'Location of VBM \(TO\):\s*([\d.-]+)\s*([\d.-]+)\s*([\d.-]+)', content)
             location_cbm_to = re.search(r'Location of CBM \(TO\):\s*([\d.-]+)\s*([\d.-]+)\s*([\d.-]+)', content)
 
-            # Записываем только значения в файл output_file
-            with open(output_file, 'a') as out_file:
-                out_file.write(f'{band_gap.group(1)} {band_gap.group(2)} {band_gap.group(3)}\n')
-                out_file.write(f'{eigenvalue_vbm.group(1)} {eigenvalue_vbm.group(2)} {eigenvalue_vbm.group(3)}\n')
-                out_file.write(f'{eigenvalue_cbm.group(1)} {eigenvalue_cbm.group(2)} {eigenvalue_cbm.group(3)}\n')
-                out_file.write(f'{fermi_energy.group(1)} {fermi_energy.group(2)} {fermi_energy.group(3)}\n')
-                out_file.write(
-                    f'{highest_occupied_band.group(1)} {highest_occupied_band.group(2)} {highest_occupied_band.group(3)}\n')
-                out_file.write(
-                    f'{lowest_unoccupied_band.group(1)} {lowest_unoccupied_band.group(2)} {lowest_unoccupied_band.group(3)}\n')
-                out_file.write(f'{location_vbm_up.group(1)} {location_vbm_up.group(2)} {location_vbm_up.group(3)}\n')
-                out_file.write(f'{location_cbm_up.group(1)} {location_cbm_up.group(2)} {location_cbm_up.group(3)}\n')
-                out_file.write(f'{location_vbm_dw.group(1)} {location_vbm_dw.group(2)} {location_vbm_dw.group(3)}\n')
-                out_file.write(f'{location_cbm_dw.group(1)} {location_cbm_dw.group(2)} {location_cbm_dw.group(3)}\n')
-                out_file.write(f'{location_vbm_to.group(1)} {location_vbm_to.group(2)} {location_vbm_to.group(3)}\n')
-                out_file.write(f'{location_cbm_to.group(1)} {location_cbm_to.group(2)} {location_cbm_to.group(3)}\n')
-                out_file.write('\n')
+            # Вставляем запись в таблицу Materials
+        try:
+            cursor.execute('''
+                            INSERT INTO Materials (
+                                BandGap_eV, EigenvalueVBM_eV, EigenvalueCBM_eV, FermiEnergy_eV,
+                                HighestOccupiedBand, LowestUnoccupiedBand,
+                                LocationVBM_UP, LocationCBM_UP, LocationVBM_DW, LocationCBM_DW, LocationVBM_TO, LocationCBM_TO
+                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                            ''', (f'{band_gap.group(1)} {band_gap.group(2)} {band_gap.group(3)}',
+                                  f'{eigenvalue_vbm.group(1)} {eigenvalue_vbm.group(2)} {eigenvalue_vbm.group(3)}',
+                                  f'{eigenvalue_cbm.group(1)} {eigenvalue_cbm.group(2)} {eigenvalue_cbm.group(3)}',
+                                  f'{fermi_energy.group(1)} {fermi_energy.group(2)} {fermi_energy.group(3)}',
+                                  f'{highest_occupied_band.group(1)} {highest_occupied_band.group(2)} {highest_occupied_band.group(3)}',
+                                  f'{lowest_unoccupied_band.group(1)} {lowest_unoccupied_band.group(2)} {lowest_unoccupied_band.group(3)}',
+                                  f'{location_vbm_up.group(1)} {location_vbm_up.group(2)} {location_vbm_up.group(3)}',
+                                  f'{location_cbm_up.group(1)} {location_cbm_up.group(2)} {location_cbm_up.group(3)}',
+                                  f'{location_vbm_dw.group(1)} {location_vbm_dw.group(2)} {location_vbm_dw.group(3)}',
+                                  f'{location_cbm_dw.group(1)} {location_cbm_dw.group(2)} {location_cbm_dw.group(3)}',
+                                  f'{location_vbm_to.group(1)} {location_vbm_to.group(2)} {location_vbm_to.group(3)}',
+                                  f'{location_cbm_to.group(1)} {location_cbm_to.group(2)} {location_cbm_to.group(3)}'))
+            print("Saved with no errors(bands)")
+        except sqlite3.Error as e:
+            print(f"Error saving to database(bands): {e}")
 
     # Папка, в которой нужно выполнять поиск
     root_dir = 'Base'
@@ -127,18 +133,21 @@ def bands_nc():
             location_vbm = re.search(r'Location of VBM:\s*([\d.-]+)\s*([\d.-]+)\s*([\d.-]+)', content)
             location_cbm = re.search(r'Location of CBM:\s*([\d.-]+)\s*([\d.-]+)\s*([\d.-]+)', content)
 
-            # Записываем только значения в файл output_file
-            with open(output_file, 'a') as out_file:
-                out_file.write(f'{band_character}\n')
-                out_file.write(f'{band_gap}\n')
-                out_file.write(f'{eigenvalue_vbm}\n')
-                out_file.write(f'{eigenvalue_cbm}\n')
-                out_file.write(f'{fermi_energy}\n')
-                if homo_lumo_bands:
-                    out_file.write(f'{homo_lumo_bands.group(1)} {homo_lumo_bands.group(2)}\n')
-                out_file.write(f'{location_vbm.group(1)} {location_vbm.group(2)} {location_vbm.group(3)}\n')
-                out_file.write(f'{location_cbm.group(1)} {location_cbm.group(2)} {location_cbm.group(3)}\n')
-                out_file.write('\n')
+        try:
+            # Вставляем запись в таблицу Materials
+            cursor.execute('''
+                INSERT INTO Materials (
+                    BandCharacter, BandGap_double, EigenvalueVBM_double, EigenvalueCBM_double, FermiEnergy_double,
+                    HOMO_LUMO_Bands,
+                    LocationVBM, LocationCBM
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                ''', (
+                band_character, float(band_gap), float(eigenvalue_vbm), float(eigenvalue_cbm), float(fermi_energy),
+                homo_lumo_bands.group(0) if homo_lumo_bands else None,
+                location_vbm.group(0), location_cbm.group(0)))
+            print("Saved with no errors(bands_nc)")
+        except sqlite3.Error as e:
+            print(f"Error saving to database(bands_nc): {e}")
 
     # Папка, в которой нужно выполнять поиск
     root_dir = 'Base'
@@ -170,12 +179,16 @@ def energy_mag():
             e_value = re.search(r'd E =([\d.E+-]+)', content).group(1)
             mag_value = re.search(r'mag= ([\d.E+-]+)', content).group(1)
 
-            # Записываем только значения в файл output_file
-            with open(output_file, 'a') as out_file:
-                out_file.write(f'{f_value}\n')
-                out_file.write(f'{e0_value}\n')
-                out_file.write(f'{e_value}\n')
-                out_file.write(f'{mag_value}\n\n')
+        # Вставляем запись в таблицу Materials
+        try:
+            cursor.execute('''
+                            INSERT INTO Materials (
+                                F, E0, E, mag
+                            ) VALUES (?, ?, ?, ?)
+                            ''', (f_value, e0_value, e_value, float(mag_value)))
+            print("Saved with no errors(energy_mag)")
+        except sqlite3.Error as e:
+            print(f"Error saving to database(energy_mag): {e}")
 
     # Папка, в которой нужно выполнять поиск
     root_dir = 'Base'
@@ -205,10 +218,16 @@ def wf():
             vacuum_level = re.search(r'Vacuum-Level \(eV\):\s*([\d.]+)', content).group(1)
             work_function = re.search(r'Work Function \(eV\):\s*([\d.]+)', content).group(1)
 
-            # Записываем только значения в файл output_file
-            with open(output_file, 'a') as out_file:
-                out_file.write(f'{vacuum_level}\n')
-                out_file.write(f'{work_function}\n\n')
+        try:
+            # Вставляем запись в таблицу Materials
+            cursor.execute('''
+                        INSERT INTO Materials (
+                            VacuumLevel_eV, WorkFunction_eV
+                        ) VALUES (?, ?)
+                        ''', (float(vacuum_level), float(work_function)))
+            print("Saved with no errors(wf)")
+        except sqlite3.Error as e:
+            print(f"Error saving to database(wf): {e}")
 
     # Папка, в которой нужно выполнять поиск
     root_dir = 'Base'
@@ -230,7 +249,7 @@ def wf():
 
 if __name__ == "__main__":
     # Создаем подключение к базе данных SQLite
-    conn = sqlite3.connect('materials.db.db')
+    conn = sqlite3.connect('materials.db')
     cursor = conn.cursor()
 
     a_h()
