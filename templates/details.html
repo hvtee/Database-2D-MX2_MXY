@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Параметры соединения</title>
+</head>
+<body>
+<h1>Параметры соединения</h1>
+<!--    <p>Поиск по параметру "{{ param }}" {{ operation }} "{{ value }}"</p>-->
+<ul>
+    <li>ID: {{ result[0] }}</li>
+    <li>Prototype: {{ result[1] }}</li>
+    <li>TotalAtoms: {{ result[2] }}</li>
+    <li>FormulaUnit: {{ result[3] }}</li>
+    <li>FullFormulaUnit: {{ result[4] }}</li>
+    <li>TwoDCrystalSystem: {{ result[5] }}</li>
+    <li>LatticeConstants: {{ result[6] }}</li>
+    <li>LatticeAngles: {{ result[7] }}</li>
+    <li>LayerThickness: {{ result[8] }}</li>
+    <li>International: {{ result[9] }}</li>
+    <li>SpaceGroup: {{ result[10] }}</li>
+    <li>SymmetryOperations: {{ result[11] }}</li>
+    <li>BandGap_eV: {{ result[12] }}</li>
+    <li>EigenvalueVBM_eV: {{ result[13] }}</li>
+    <li>EigenvalueCBM_eV: {{ result[14] }}</li>
+    <li>FermiEnergy_eV: {{ result[15] }}</li>
+    <li>HighestOccupiedBand: {{ result[16] }}</li>
+    <li>LowestUnoccupiedBand: {{ result[17] }}</li>
+    <li>LocationVBM_UP: {{ result[18] }}</li>
+    <li>LocationCBM_UP: {{ result[19] }}</li>
+    <li>LocationVBM_DW: {{ result[20] }}</li>
+    <li>LocationCBM_DW: {{ result[21] }}</li>
+    <li>LocationVBM_TO: {{ result[22] }}</li>
+    <li>LocationCBM_TO: {{ result[23] }}</li>
+    <li>BandCharacterNC: {{ result[24] }}</li>
+    <li>BandGapNC: {{ result[25] }}</li>
+    <li>EigenvalueVBMNC: {{ result[26] }}</li>
+    <li>EigenvalueCBMNC: {{ result[27] }}</li>
+    <li>FermiEnergyNC: {{ result[28] }}</li>
+    <li>HOMO_LUMO_BandsNC: {{ result[29] }}</li>
+    <li>LocationVBMNC: {{ result[30] }}</li>
+    <li>LocationCBMNC: {{ result[31] }}</li>
+    <li>CellDirect: {{ result[32] }}</li>
+    <li>F: {{ result[33] }}</li>
+    <li>E0: {{ result[34] }}</li>
+    <li>E: {{ result[35] }}</li>
+    <li>mag: {{ result[36] }}</li>
+    <li>Crystal System: {{ result[37] }}</li>
+    <li>Stiffness Tensor: {{ result[38] }}</li>
+    <li>Compliance Tensor: {{ result[39] }}</li>
+    <li>Young's Modulus: {{ result[40] }}</li>
+    <li>Shear Modulus: {{ result[41] }}</li>
+    <li>Poisson's Ratio: {{ result[42] }}</li>
+    <li>Bulk modulus: {{ result[43] }}</li>
+    <li>Shear modulus: {{ result[44] }}</li>
+    <li>Bulk/Shear ratio: {{ result[45] }}</li>
+    <li>A_SU: {{ result[46] }}</li>
+    <li>A_Kube: {{ result[47] }}</li>
+    <li>K_V/K_R Ratio: {{ result[48] }}</li>
+    <li>G_V/G_R Ratio: {{ result[49] }}</li>
+    <li>VacuumLevel_eV: {{ result[50] }}</li>
+    <li>WorkFunction_eV: {{ result[51] }}</li>
+</ul>
+<a href="{{url_for('index')}}">Back</a>
+</body>
+</html>

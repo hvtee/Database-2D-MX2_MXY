@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Список соединений</title>
+</head>
+<body>
+<h1>Список соединений:</h1>
+<ul>
+    {% for result in results %}
+    <li><a href="{{ url_for('details', id=result[0]) }}">{{ result[1] }}</a></li>
+    {% endfor %}
+</ul>
+
+<img src="{{ url_for('static', filename='photo_base/band_dos.pdf') }}">
+<img src="{{ url_for('static', filename='photo_base/BAND.jpg') }}">
+
+</body>
+</html>
