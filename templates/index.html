@@ -2,9 +2,48 @@
 <html>
 <head>
     <title>Список соединений</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        // Add JavaScript to toggle the visibility of the dropdown content
+        function toggleDropdown() {
+            var dropdownContent = document.getElementById("dropdownContent");
+            dropdownContent.style.display = (dropdownContent.style.display === "block") ? "none" : "block";
+        }
+
+
+
+    </script>
 </head>
 <body>
-<h1>Список соединений:</h1>
+<div class="header">
+    <h1>
+        Database of properties of 2D materials with MX2 and MX1X2 structure
+    </h1>
+</div>
+<form action="/" method="GET">
+    <label for="search">Search:</label>
+    <div class="dropdown-box">
+        <div class="dropdown" onclick="toggleDropdown()">
+            <span class="dropdown-list" style="font-size: 20px;">?</span>
+            <div class="dropdown-content" id="dropdownContent">
+                <p><strong>Названия столбцов:</strong></p>
+                <p>LatticeConstants</p>
+                <p>LayerThickness</p>
+                <p>VacuumLevel_eV</p>
+                <p>WorkFunction_eV</p>
+                <p>BandCharacterNC</p>
+                <p>BandGapNC</p>
+                <p>FermiEnergyNC</p>
+            </div>
+        </div>
+    </div>
+    <input type="text" name="search" id="search" value="{{ search_query }}">
+    <input type="submit" value="Find">
+    <input type="button" value="Reset" onclick="location.href='{{ url_for('index') }}'">
+</form>
+<div class="list">
+    <h2>Список соединений:</h2>
+</div>
 <ul>
     {% for result in results %}
     <li><a href="{{ url_for('details', id=result[0]) }}">{{ result[1] }}</a></li>

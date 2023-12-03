@@ -6,24 +6,42 @@ app = Flask(__name__)
 
 
 # Функция для выполнения запросов к базе данных с параметрами
-def execute_query(column, operation, value):
+def execute_query(column=None, operation=None, value=None):
     connection = sqlite3.connect('materials.db')
     cursor = connection.cursor()
 
-    # Формируем SQL-запрос с использованием параметров
-    query = f"SELECT ID, FormulaUnit FROM Materials WHERE {column} {operation} ?"
-    cursor.execute(query, (value,))
+    # Формируем SQL-запрос в зависимости от наличия параметров
+    if column and operation and value:
+        query = f"SELECT ID, FormulaUnit FROM Materials WHERE {column} {operation} ?"
+        cursor.execute(query, (value,))
+    else:
+        query = "SELECT ID, FormulaUnit FROM Materials"
+        cursor.execute(query)
 
     results = cursor.fetchall()
     connection.close()
     return results
 
 
-# Основной маршрут для отображения результатов
+# Маршрут для отображения всех записей
 @app.route('/')
 def index():
-    results = execute_query("mag", "=", "1")
-    return render_template('index.html', results=results)
+    search_query = request.args.get('search', default='')  # Получаем значение параметра 'search' из запроса
+
+    if search_query:
+        # Если введен поисковый запрос, выполняем поиск
+        search_params = search_query.split()
+        if len(search_params) == 3:
+            # Проверяем, что введены все три параметра для поиска
+            column, operation, value = search_params
+            results = execute_query(column, operation, value)
+        else:
+            return "Неверное количество параметров для поиска"
+    else:
+        # Иначе, выводим все записи
+        results = execute_query()
+
+    return render_template('index.html', results=results, search_query=search_query)
 
 
 # Маршрут для отображения деталей элемента
