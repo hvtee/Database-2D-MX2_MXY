@@ -1,66 +1,45 @@
-11
-1 Prototype - string
-2 Total-Atoms - int
-3 Formula-Unit - string
-4 Full Formula-Unit - string
-5 2D Crystal System - string
-6 Lattice Constants - string
-7 Lattice Angles - string
-8 Layer Thickness - double
-9 International - P-6m2
-10 Space Group - double
-11 Symmetry Operations - double
+8 Structure:
+1 Compound - string
+2 2DCrystalSystem - string
+3 LatticeConstants - string
+4 LatticeAngles - string
+5 LayerThickness - double
+6 International - string
+7 SpaceGroup - double
+8 SymmetryOperations - double
 
-12
-12 Band Gap (eV) - string
-13 Eigenvalue of VBM (eV) - string
-14 Eigenvalue of CBM (eV) - string
-15 Fermi Energy (eV) - string
-16 Highest-Occupied Band - string
-17 Lowest-Unoccupied Band - string
-18 Location of VBM (UP) - string
-19 Location of CBM (UP) - string
-20 Location of VBM (DW) - string
-21 Location of CBM (DW) - string
-22 Location of VBM (TO) - string
-23 Location of CBM (TO) - string
+12 BANDs
+9 Band Gap (eV) - string
+10 Eigenvalue of VBM (eV) - string
+11 Eigenvalue of CBM (eV) - string
+12 Fermi Energy (eV) - string
+13 Highest-Occupied Band - string
+14 Lowest-Unoccupied Band - string
+15 LocVBMUP - string
+16 LocCBMUP - string
+17 LocVBMDW - string
+18 LocCBMDW - string
+19 LocVBMTO - string
+20 LocCBMTO - string
 
-8
-24 Band Character - string
-25 Band Gap (eV) - double
-26 Eigenvalue of VBM (eV) - double
-27 Eigenvalue of CBM (eV) - double
-28 Fermi Energy (eV) - double
-29 HOMO & LUMO Bands - string
-30 Location of VBM - string
-31 Location of CBM - string
+2 Cell
+21 lattice_vectors - string
+22 ion_positions - string
 
-1
-32 cell_direct - string
+2 Energy_mag_mom
+23 TotalEnergy - double
+24 TotalMagnetization - double
 
-4
-33 F - double
-34 E0 - double
-35 E - double
-36 mag - double
-
-13
-37 Crystal System
-38 Stiffness Tensor
-39 Compliance Tensor
+7 Mechanical
+25 Stiffness Tensor
 ---
-40 Young's Modulus
-41 Shear Modulus
-42 Poisson's Ratio
-43 Bulk modulus
-44 Shear modulus
-45 Bulk/Shear ratio
----
-46 A_SU
-47 A_Kube
-48 K_V/K_R Ratio
-49 G_V/G_R Ratio
+26 Young's Modulus - string
+27 Shear Modulus - string
+28 Poisson's Ratio - string
+29 Bulk modulus - string
+30 Shear modulus - string
+31 Bulk/Shear ratio - string
 
-2
-50 Vacuum-Level (eV) - double
-51 Work Function (eV) - double
+2 Work_func
+32 VacuumLevel - double
+33 WorkFunction - double
