@@ -1,4 +1,5 @@
 import sqlite3
+import webbrowser
 
 from flask import Flask, render_template, request, redirect, url_for
 
@@ -12,10 +13,10 @@ def execute_query(column=None, operation=None, value=None):
 
     # Формируем SQL-запрос в зависимости от наличия параметров
     if column and operation and value:
-        query = f"SELECT ID, FormulaUnit FROM Materials WHERE {column} {operation} ?"
+        query = f"SELECT id, compound FROM Materials WHERE {column} {operation} ?"
         cursor.execute(query, (value,))
     else:
-        query = "SELECT ID, FormulaUnit FROM Materials"
+        query = "SELECT ID, compound FROM Materials"
         cursor.execute(query)
 
     results = cursor.fetchall()
@@ -60,4 +61,14 @@ def details(id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Определите порт, на котором будет запущен Flask
+    port = 5000  # Вы можете выбрать любой доступный порт
+
+    # Строка с адресом запуска Flask приложения
+    url = f"http://127.0.0.1:{port}/"
+
+    # Открывает браузер по умолчанию с указанным URL-адресом
+    webbrowser.open(url)
+
+    # Запускает Flask приложение на указанном порту
+    app.run(debug=True, port=port)

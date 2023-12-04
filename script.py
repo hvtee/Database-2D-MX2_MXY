@@ -48,6 +48,11 @@ bulk_shear_ratio = None
 vacuum_level = None
 work_function = None
 
+# url
+path_phonone = None
+path_planar = None
+path_band = None
+
 
 def process_structure_file(filepath):
     global compound, crystal_system, lattice_constants, lattice_angles, layer_thickness
@@ -108,9 +113,12 @@ def process_cell_file(filepath):
 
     with open(filepath, 'r') as file:
         content = file.read()
+        print(file.name)
 
         # Используем регулярные выражения для поиска значений
-        lattice_vectors_match = re.search(r'a1:\s*([\d.-]+)\s*([\d.-]+)\s*([\d.-]+)\n\s*a2:\s*([\d.-]+)\s*([\d.-]+)\s*([\d.-]+)\n\s*a3:\s*([\d.-]+)\s*([\d.-]+)\s*([\d.-]+)', content)
+        lattice_vectors_match = re.search(
+            r'a1:\s*([\d.-]+)\s*([\d.-]+)\s*([\d.-]+)\n\s*a2:\s*([\d.-]+)\s*([\d.-]+)\s*([\d.-]+)\n\s*a3:\s*([\d.-]+)\s*([\d.-]+)\s*([\d.-]+)',
+            content)
         ion_positions_match = re.findall(r'([\d.-]+)\s*([\d.-]+)\s*([\d.-]+)\s*(\w+\d+)', content)
 
         if lattice_vectors_match:
@@ -172,42 +180,44 @@ def process_mech_file(filepath):
         else:
             stiffness_tensor = None
 
-        youngs_modulus_values = re.search(r"Young's Modulus E \(N/m\) \| ([\d.]+) \| ([\d.]+) \| ([\d.]+) \|", content)
-        if youngs_modulus_values:
-            youngs_modulus = [float(match) for match in youngs_modulus_values.groups()]
+        #####
+        YoungsModulus = re.search(r"Young's Modulus E \(N/m\) \| ([\d.]+) \| ([\d.]+) \| ([\d.]+) \|", content)
+        if YoungsModulus:
+            YoungsModulus = [float(match) for match in YoungsModulus.groups()]
         else:
-            youngs_modulus = None
+            YoungsModulus = None
 
-        shear_modulus_values = re.search(r"Shear Modulus G \(N/m\) \| ([\d.]+) \| ([\d.]+) \| ([\d.]+) \|", content)
-        if shear_modulus_values:
-            shear_modulus = [float(match) for match in shear_modulus_values.groups()]
+        #####
+        ShearModulusAnis = re.search(r"Shear Modulus G \(N/m\) \| ([\d.]+) \| ([\d.]+) \| ([\d.]+) \|", content)
+        if ShearModulusAnis:
+            ShearModulusAnis = [float(match) for match in ShearModulusAnis.groups()]
         else:
-            shear_modulus = None
+            ShearModulusAnis = None
 
-        poisson_ratio_values = re.search(r"Poisson's Ratio v \| ([\d.]+) \| ([\d.]+) \| ([\d.]+) \|", content)
-        if poisson_ratio_values:
-            poisson_ratio = [float(match) for match in poisson_ratio_values.groups()]
+        #####
+        PoissonsRatio = re.search(r"Poisson's Ratio v \| ([\d.]+) \| ([\d.]+) \| ([\d.]+) \|", content)
+        if PoissonsRatio:
+            PoissonsRatio = [float(match) for match in PoissonsRatio.groups()]
         else:
-            poisson_ratio = None
+            PoissonsRatio = None
 
-        bulk_modulus_values = re.search(r"Bulk modulus K \(N/m\) \| ([\d.]+) \| ([\d.]+) \| ([\d.]+) \|", content)
-        if bulk_modulus_values:
-            bulk_modulus = [float(match) for match in bulk_modulus_values.groups()]
+        BulkModulus = re.search(r"Bulk modulus K \(N/m\) \| ([\d.]+) \| ([\d.]+) \| ([\d.]+) \|", content)
+        if BulkModulus:
+            BulkModulus = [float(match) for match in BulkModulus.groups()]
         else:
-            bulk_modulus = None
+            BulkModulus = None
 
-        shear_modulus_mechanical_values = re.search(r"Shear modulus G \(N/m\) \| ([\d.]+) \| ([\d.]+) \| ([\d.]+) \|",
-                                                    content)
-        if shear_modulus_mechanical_values:
-            shear_modulus_mechanical = [float(match) for match in shear_modulus_mechanical_values.groups()]
+        ShearModulusAver = re.search(r"Shear modulus G \(N/m\) \| ([\d.]+) \| ([\d.]+) \| ([\d.]+) \|", content)
+        if ShearModulusAver:
+            ShearModulusAver = [float(match) for match in ShearModulusAver.groups()]
         else:
-            shear_modulus_mechanical = None
+            ShearModulusAver = None
 
-        bulk_shear_ratio_values = re.search(r"Bulk/Shear ratio \| ([\d.]+) \| ([\d.]+) \| ([\d.]+) \|", content)
-        if bulk_shear_ratio_values:
-            bulk_shear_ratio = [float(match) for match in bulk_shear_ratio_values.groups()]
+        BulkShearRatio = re.search(r"Bulk/Shear ratio \| ([\d.]+) \| ([\d.]+) \| ([\d.]+) \|", content)
+        if BulkShearRatio:
+            BulkShearRatio = [float(match) for match in BulkShearRatio.groups()]
         else:
-            bulk_shear_ratio = None
+            BulkShearRatio = None
 
 
 def process_wf_file(filepath):
@@ -232,6 +242,8 @@ def process_wf_file(filepath):
 
 
 def save():
+    global path_phonone, path_planar, path_band
+
     # Папка, в которой нужно выполнять поиск
     root_dir = 'Base'
     conn = sqlite3.connect('materials.db')
@@ -262,11 +274,18 @@ def save():
                     file_path = os.path.join(dirpath, filename)
                     process_wf_file(file_path)
 
-            if work_function is None:
+                static_path = "photo_base/" + dirpath
+                static_path = static_path.replace('\\', '/')
+
+                path_phonone = static_path + "/Phonone.jpg"
+                path_planar = static_path + "/PLANAR_AVERAGE.jpg"
+                path_band = static_path + "/Bandstructure.jpg"
+
+            if len(filenames)==0:
                 continue
 
             cursor.execute('''
-                INSERT INTO mater (
+                INSERT INTO Materials (
                     compound,
                     crystal_system,
                     lattice_constants,
@@ -299,14 +318,18 @@ def save():
                     shear_modulus_mechanical,
                     bulk_shear_ratio,
                     vacuum_level,
-                    work_function
+                    work_function,
+                    url_for_phonone,
+                    url_for_planar,
+                    url_for_bands
                 ) VALUES (
                 ?, ?, ?, ?, ?, ?, ?, ?,
                 ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
                 ?, ?,
                 ?, ?,
                 ?, ?, ?, ?, ?, ?, ?,
-                ?, ?)
+                ?, ?,
+                ?, ?, ?)
             ''', (
                 compound,
                 crystal_system,
@@ -340,7 +363,10 @@ def save():
                 str(shear_modulus_mechanical),
                 str(bulk_shear_ratio),
                 vacuum_level,
-                work_function
+                work_function,
+                path_phonone,
+                path_planar,
+                path_band
             ))
 
             cursor.close()
