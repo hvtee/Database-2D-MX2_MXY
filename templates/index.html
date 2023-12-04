@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Список соединений</title>
+    <title>Materials list</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script>
         // Add JavaScript to toggle the visibility of the dropdown content
@@ -12,38 +12,43 @@
 
 
 
+
+
+
+
+
     </script>
 </head>
 <body>
 <div class="header">
     <h1>
-        Database of properties of 2D materials with MX2 and MX1X2 structure
+        Database of properties of 2D materials with MX<sub>2</sub> and MX<sup>1</sup>X<sup>2</sup> structure
     </h1>
 </div>
-<form action="/" method="GET">
-    <label for="search">Search:</label>
-    <div class="dropdown-box">
-        <div class="dropdown" onclick="toggleDropdown()">
-            <span class="dropdown-list" style="font-size: 20px;">?</span>
-            <div class="dropdown-content" id="dropdownContent">
-                <p><strong>Названия столбцов:</strong></p>
-                <p>LatticeConstants</p>
-                <p>LayerThickness</p>
-                <p>VacuumLevel_eV</p>
-                <p>WorkFunction_eV</p>
-                <p>BandCharacterNC</p>
-                <p>BandGapNC</p>
-                <p>FermiEnergyNC</p>
-            </div>
-        </div>
-    </div>
-    <input type="text" name="search" id="search" value="{{ search_query }}">
-    <input type="submit" value="Find">
-    <input type="button" value="Reset" onclick="location.href='{{ url_for('index') }}'">
-</form>
-<div class="list">
-    <h2>Список соединений:</h2>
+
+<div class="search">
+    <form action="/" method="GET" class="search-bar">
+        <label for="search">Search:</label>
+        <input type="text" name="search" id="search" value="{{ search_query }}">
+        <input type="submit" value="Find">
+        <input type="button" value="Reset" onclick="location.href='{{ url_for('index') }}'">
+    </form>
 </div>
+<div class="search-params">
+    <p><strong>Search parameters: :</strong></p>
+    <p>compound</p>
+    <p>layer_thickness</p>
+    <p>space_group</p>
+    <p>symmetry_operations</p>
+    <p>total_energy</p>
+    <p>total_magnetization</p>
+    <p>vacuum_level</p>
+    <p>work_function</p>
+</div>
+
+
+<h2>List of materials:</h2>
+
 <ul>
     {% for result in results %}
     <li><a href="{{ url_for('details', id=result[0]) }}">{{ result[1] }}</a></li>

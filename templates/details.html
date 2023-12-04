@@ -1,52 +1,130 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Параметры соединения</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Material properties</title>
 </head>
 <body>
-<h1>Параметры соединения</h1>
+<div class="header">
+    <h1>
+        Database of properties of 2D materials with MX<sub>2</sub> and MX<sup>1</sup>X<sup>2</sup> structure
+    </h1>
+</div>
+<h2>Material properties: </h2>
 <!--    <p>Поиск по параметру "{{ param }}" {{ operation }} "{{ value }}"</p>-->
 <ul>
-    <li>ID: {{ result[0] }}</li>
-    <li>compound: {{ result[1] }}</li>
-    <li>crystal_system: {{ result[2] }}</li>
-    <li>lattice_constants: {{ result[3] }}</li>
-    <li>lattice_angles: {{ result[4] }}</li>
-    <li>layer_thickness: {{ result[5] }}</li>
-    <li>international: {{ result[6] }}</li>
-    <li>space_group: {{ result[7] }}</li>
-    <li>symmetry_operations: {{ result[8] }}</li>
-    <li>band_gap: {{ result[9] }}</li>
-    <li>eigenvalue_vbm: {{ result[10] }}</li>
-    <li>eigenvalue_cbm: {{ result[11] }}</li>
-    <li>fermi_energy: {{ result[12] }}</li>
-    <li>highest_occupied_band: {{ result[13] }}</li>
-    <li>lowest_unoccupied_band: {{ result[14] }}</li>
-    <li>loc_vbm_up: {{ result[15] }}</li>
-    <li>loc_cbm_up: {{ result[16] }}</li>
-    <li>loc_vbm_dw: {{ result[17] }}</li>
-    <li>loc_cbm_dw: {{ result[18] }}</li>
-    <li>loc_vbm_to: {{ result[19] }}</li>
-    <li>loc_cbm_to: {{ result[20] }}</li>
-    <li>lattice_vectors: {{ result[21] }}</li>
-    <li>ion_positions: {{ result[22] }}</li>
-    <li>total_energy: {{ result[23] }}</li>
-    <li>total_magnetization: {{ result[24] }}</li>
-    <li>stiffness_tensor: {{ result[25] }}</li>
+    <li>Compound: {{ result[1] }}</li>
+    <li>2D Crystal System: {{ result[2] }}</li>
+    <li>Lattice Constants: {{ result[3] }}</li>
+    <li>Lattice Angles: {{ result[4] }}</li>
+    <li>Layer Thickness: {{ result[5] }}</li>
+    <li>International: {{ result[6] }}</li>
+    <li>Space Group: {{ result[7] }}</li>
+    <li>Symmetry Operations: {{ result[8] }}</li>
+
+    <li>
+        <table>
+            <tr>
+                <th>Spin channel</th>
+                <th>&lt;UP&gt; &lt;DOWN&gt; &lt;TOTAL&gt;</th>
+            </tr>
+            <tr>
+                <td>Band Gap (eV):</td>
+                <td>{{ result[9] }}</td>
+            </tr>
+            <tr>
+                <td>Eigenvalue of VBM (eV):</td>
+                <td>{{ result[10] }}</td>
+            </tr>
+            <tr>
+                <td>Eigenvalue of CBM (eV):</td>
+                <td>{{ result[11] }}</td>
+            </tr>
+            <tr>
+                <td>Fermi Energy (eV):</td>
+                <td>{{ result[12] }}</td>
+            </tr>
+            <tr>
+                <td>Highest-Occupied Band:</td>
+                <td>{{ result[13] }}</td>
+            </tr>
+            <tr>
+                <td>Lowest-Unoccupied Band:</td>
+                <td>{{ result[14] }}</td>
+            </tr>
+            <tr>
+                <td>Location of VBM (UP): )</td>
+                <td>{{ result[15] }}</td>
+            </tr>
+            <tr>
+                <td>Location of CBM (UP):</td>
+                <td>{{ result[16] }}</td>
+            </tr>
+            <tr>
+                <td>Location of VBM (DW):</td>
+                <td>{{ result[17] }}</td>
+            </tr>
+            <tr>
+                <td>Location of CBM (DW):</td>
+                <td>{{ result[18] }}</td>
+            </tr>
+            <tr>
+                <td>Location of VBM (TO):</td>
+                <td>{{ result[19] }}</td>
+            </tr>
+            <tr>
+                <td>Location of CBM (TO):</td>
+                <td>{{ result[20] }}</td>
+            </tr>
+        </table>
+    </li>
+
+    {% set rows = result[21] %}
+    {% set row1 = rows[:61] %}
+    {% set row2 = rows[61:123] %}
+    {% set row3 = rows[123:] %}
+    <li>Lattice vectors:<br> {{ row1 }} <br> {{ row2 }} <br> {{ row3 }}</li>
+
+    {% set rows = result[22] %}
+    {% set row1 = rows[:61] %}
+    {% set row2 = rows[61:122] %}
+    {% set row3 = rows[122:] %}
+    <li>Ion positions:<br> {{ row1 }} <br> {{ row2 }} <br> {{ row3 }}</li>
+
+    <li>Total energy: {{ result[23] }}</li>
+    <li>Total magnetization: {{ result[24] }}</li>
+
+    <li>Stiffness Tensor C_ij (in N/m): {{ result[25] }}</li>
     <li>youngs_modulus: {{ result[26] }}</li>
     <li>shear_modulus: {{ result[27] }}</li>
     <li>poisson_ratio: {{ result[28] }}</li>
     <li>bulk_modulus: {{ result[29] }}</li>
     <li>shear_modulus_mechanical: {{ result[30] }}</li>
     <li>bulk_shear_ratio: {{ result[31] }}</li>
-    <li>vacuum_level: {{ result[32] }}</li>
-    <li>work_function: {{ result[33] }}</li>
-    <li><img alt="phonone" src="{{ url_for('static', filename=result[34]) }}">: {{ result[34] }}</li>
-    <li><img alt="band" src="{{ url_for('static', filename=result[35]) }}">: {{ result[35] }}</li>
-    <li><img alt="planar" src="{{ url_for('static', filename=result[36]) }}">: {{ result[36] }}</li>
 
-
+    <li>Vacuum-Level (eV): {{ result[32] }}</li>
+    <li>Work Function (eV): {{ result[33] }}</li>
 </ul>
-<a href="{{url_for('index')}}">Back</a>
+
+<div class="phonon-box">
+    <div class="phonon-img"><img alt="phonone" src="{{ url_for('static', filename=result[34]) }}"></div>
+    <span>Phonon</span>
+</div>
+
+<div class="band-box">
+    <div class="band-img"><img alt="band" src="{{ url_for('static', filename=result[35]) }}"></div>
+    <span>Bands</span>
+</div>
+
+<div class="planar-box">
+    <div class="planar-img"><img alt="planar" src="{{ url_for('static', filename=result[36]) }}"></div>
+    <span>Planar</span>
+</div>
+<br><br><br>
+<div class="back-button"><a href="{{ url_for('index', search=search_query) }}">Back</a></div>
+
 </body>
 </html>
