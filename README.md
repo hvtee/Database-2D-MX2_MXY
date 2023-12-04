@@ -10,8 +10,6 @@ This is a Flask web application that provides a user interface for querying and 
 
 Make sure you have the following installed:
 
-Make sure you have the following installed:
-
 - [Python](https://www.python.org/downloads/): Version 3.6 or higher
 - [Flask](https://flask.palletsprojects.com/en/2.0.x/installation/): A micro web framework for Python
 - [SQLite](https://www.sqlite.org/download.html): A C library that provides a lightweight disk-based database
