@@ -48,6 +48,8 @@ def index():
 # Маршрут для отображения деталей элемента
 @app.route('/details/<int:id>')
 def details(id):
+    search_query = request.args.get('search', default='')
+
     connection = sqlite3.connect('materials.db')
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM Materials WHERE ID=?", (id,))
@@ -55,7 +57,7 @@ def details(id):
     connection.close()
 
     if result:
-        return render_template('details.html', result=result)
+        return render_template('details.html', result=result, search_query=search_query)
     else:
         return "Элемент не найден"
 
