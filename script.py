@@ -110,9 +110,7 @@ def process_cell_file(filepath):
         content = file.read()
 
         # Используем регулярные выражения для поиска значений
-        lattice_vectors_match = re.search(
-            r'a1:\s*([\d.-]+)\s*([\d.-]+)\s*([\d.-]+)\n\s*a2:\s*([\d.-]+)\s*([\d.-]+)\s*([\d.-]+)\n\s*a3:\s*([\d.-]+)\s*([\d.-]+)\s*([\d.-]+)',
-            content)
+        lattice_vectors_match = re.search(r'a1:\s*([\d.-]+)\s*([\d.-]+)\s*([\d.-]+)\n\s*a2:\s*([\d.-]+)\s*([\d.-]+)\s*([\d.-]+)\n\s*a3:\s*([\d.-]+)\s*([\d.-]+)\s*([\d.-]+)', content)
         ion_positions_match = re.findall(r'([\d.-]+)\s*([\d.-]+)\s*([\d.-]+)\s*(\w+\d+)', content)
 
         if lattice_vectors_match:
@@ -121,10 +119,11 @@ def process_cell_file(filepath):
             lattice_vectors += f"a2: {lattice_vectors_match.group(4)} {lattice_vectors_match.group(5)} {lattice_vectors_match.group(6)}\n"
             lattice_vectors += f"a3: {lattice_vectors_match.group(7)} {lattice_vectors_match.group(8)} {lattice_vectors_match.group(9)}"
 
+        ion_positions_match = re.findall(r'([\d.-]+)\s*([\d.-]+)\s*([\d.-]+)\s*(\w+\d+)', content)
+
         if ion_positions_match:
-            # Форматирование значений для переменной ion_positions
-            ion_positions = "\n".join(
-                [f"{match[0]} {match[1]} {match[2]} {match[3]}" for match in ion_positions_match])
+            # Your existing code for formatting ion_positions
+            ion_positions = "\n".join([f"{pos[0]} {pos[1]} {pos[2]} {pos[3]}" for pos in ion_positions_match[3:]])
         else:
             ion_positions = None
 
@@ -333,13 +332,13 @@ def save():
                 ion_positions,
                 total_energy,
                 total_magnetization,
-                stiffness_tensor,
-                youngs_modulus,
-                shear_modulus,
-                poisson_ratio,
-                bulk_modulus,
-                shear_modulus_mechanical,
-                bulk_shear_ratio,
+                str(stiffness_tensor),
+                str(youngs_modulus),
+                str(shear_modulus),
+                str(poisson_ratio),
+                str(bulk_modulus),
+                str(shear_modulus_mechanical),
+                str(bulk_shear_ratio),
                 vacuum_level,
                 work_function
             ))
