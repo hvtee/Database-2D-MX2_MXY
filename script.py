@@ -180,26 +180,72 @@ def process_mech_file(filepath):
         else:
             stiffness_tensor = None
 
-        #####
-        YoungsModulus = re.search(r"Young's Modulus E \(N/m\) \| ([\d.]+) \| ([\d.]+) \| ([\d.]+) \|", content)
-        if YoungsModulus:
-            YoungsModulus = [float(match) for match in YoungsModulus.groups()]
-        else:
-            YoungsModulus = None
+        lines = content.split('\n')
 
-        #####
-        ShearModulusAnis = re.search(r"Shear Modulus G \(N/m\) \| ([\d.]+) \| ([\d.]+) \| ([\d.]+) \|", content)
-        if ShearModulusAnis:
-            ShearModulusAnis = [float(match) for match in ShearModulusAnis.groups()]
-        else:
-            ShearModulusAnis = None
+        # Поиск Anisotropic mechanical properties
+        anisotropic_start = lines.index(" Anisotropic mechanical properties of 2D singlecrystal:")
+        anisotropic_end = lines.index(" o---------------------------------------------------------------o",
+                                      anisotropic_start)
+        anisotropic_properties_raw = [line.split('|')[1:-1] for line in lines[anisotropic_start + 3:anisotropic_end] if
+                                      line.strip()]
 
-        #####
-        PoissonsRatio = re.search(r"Poisson's Ratio v \| ([\d.]+) \| ([\d.]+) \| ([\d.]+) \|", content)
-        if PoissonsRatio:
-            PoissonsRatio = [float(match) for match in PoissonsRatio.groups()]
-        else:
-            PoissonsRatio = None
+        YoungsModulus = []
+        ShearModulusAnis = []
+        PoissonsRatio = []
+        BulkModulus = []
+        ShearModulusAver = []
+        BulkShearRatio = []
+
+        for prop in anisotropic_properties_raw:
+            prop_values = [item.strip() for item in prop]
+            if prop == 0:
+                YoungsModulus.append({
+                    float(prop_values[1]) if prop_values[1] else None,
+                    float(prop_values[2]) if prop_values[2] else None,
+                    float(prop_values[3]) if prop_values[3] else None
+                })
+            if prop == 1:
+                ShearModulusAnis.append({
+                    float(prop_values[1]) if prop_values[1] else None,
+                    float(prop_values[2]) if prop_values[2] else None,
+                    float(prop_values[3]) if prop_values[3] else None
+                })
+            if prop == 2:
+                PoissonsRatio.append({
+                    float(prop_values[1]) if prop_values[1] else None,
+                    float(prop_values[2]) if prop_values[2] else None,
+                    float(prop_values[3]) if prop_values[3] else None
+                })
+
+        # Поиск Average mechanical properties
+        average_start = lines.index(" Average mechanical properties of 2D polycrystal:")
+        average_end = lines.index(" o---------------------------------------------------------------o", average_start)
+        average_properties_raw = [line.split('|')[1:-1] for line in lines[average_start + 3:average_end] if
+                                  line.strip()]
+
+        average_properties = []
+        for prop in average_properties_raw:
+            prop_values = [item.strip() for item in prop]
+            if prop == 0:
+                BulkModulus.append({
+                    float(prop_values[1]) if prop_values[1] else None,
+                    float(prop_values[2]) if prop_values[2] else None,
+                    float(prop_values[3]) if prop_values[3] else None
+                })
+            if prop == 1:
+                ShearModulusAver.append({
+                    float(prop_values[1]) if prop_values[1] else None,
+                    float(prop_values[2]) if prop_values[2] else None,
+                    float(prop_values[3]) if prop_values[3] else None
+                })
+            if prop == 2:
+                BulkShearRatio.append({
+                    float(prop_values[1]) if prop_values[1] else None,
+                    float(prop_values[2]) if prop_values[2] else None,
+                    float(prop_values[3]) if prop_values[3] else None
+                })
+
+
 
         BulkModulus = re.search(r"Bulk modulus K \(N/m\) \| ([\d.]+) \| ([\d.]+) \| ([\d.]+) \|", content)
         if BulkModulus:
@@ -281,7 +327,7 @@ def save():
                 path_planar = static_path + "/PLANAR_AVERAGE.jpg"
                 path_band = static_path + "/Bandstructure.jpg"
 
-            if len(filenames)==0:
+            if len(filenames) == 0:
                 continue
 
             cursor.execute('''
