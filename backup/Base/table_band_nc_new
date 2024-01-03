@@ -1,0 +1,26 @@
+#!/bin/bash
+
+elem=$(cat ./hal)
+file="materials_list"
+
+for hal in $(cat ./halcs)
+do
+cd M${hal};
+for var in $(cat ./materials_list)
+do
+cd ${var}${hal}/bands_1T_U_nc
+echo 911 | vaspkit > bands_inf
+cat bands_inf | tail -n 24 | head -n 8 > bands;
+cp bands /home/user/2D_materials/Base/M${hal}/${var}${hal}/1T/bands_nc
+cd ..
+cd ..
+cd ${var}${hal}/bands_2H_U_nc
+echo 911 | vaspkit > bands_inf
+cat bands_inf | tail -n 24 | head -n 8 > bands;
+cp bands /home/user/2D_materials/Base/M${hal}/${var}${hal}/1H/bands_nc
+cd ..
+cd ..
+done
+cd ..
+done
+

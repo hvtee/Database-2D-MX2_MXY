@@ -1,0 +1,52 @@
+ o-------------------------- Summary ----------------------------o
+ Crystal System: Hexagonal
+ There are 2 independent elastic constants
+ C11 C12 0
+ C12 C11 0
+ 0 0 C66=(C11-C12)/2
+ 
+ Stiffness Tensor C_ij (in N/m):
+ -184.728 34.523 0.000
+ 34.523 -184.728 0.000
+ 0.000 0.000 -109.625
+ Compliance Tensor S_ij (in m/N):
+ -0.005609 -0.001048 0.000000
+ -0.001048 -0.005609 0.000000
+ 0.000000 0.000000 -0.009122
+ 
+ Anisotropic mechanical properties of 2D singlecrystal:
+ o---------------------------------------------------------------o
+ | Mechanical Properties | Min | Max | Anisotropy|
+ |---------------------------------------------------------------|
+ | Young's Modulus E (N/m) | -178.276 | -178.276 | 1.000 |
+ | Shear Modulus G (N/m) | -109.625 | -109.625 | 1.000 |
+ | Poisson's Ratio v | -0.187 | -0.187 | 1.000 |
+ o---------------------------------------------------------------o
+ References:
+ [1] Wang V., et al., arXiv:1806.04285 (2018) 
+ 
+ Average mechanical properties of 2D polycrystal:
+ o---------------------------------------------------------------o
+ | Mechanical Properties | Voigt | Reuss | Hill |
+ |---------------------------------------------------------------|
+ | Bulk modulus K (N/m) | -75.102 | -75.102 | -75.102 |
+ | Shear modulus G (N/m) | -109.625 | -109.625 | -109.625 |
+ | Bulk/Shear ratio | 0.685 | 0.685 | 0.685 |
+ o---------------------------------------------------------------o
+ Universal Elastic Anisotropy Index (A_SU): 0.000
+ Kube Anisotropy Index (A_Kube): 0.000
+ K_V/K_R Ratio: 1.000
+ G_V/G_R Ratio: 1.000
+ References:
+ [1] Li R., et al., Extreme Mech. Lett. 34, 100615 (2020)
+ 
+ Eigenvalues of the stiffness matrix (in N/m):
+ Eigenvalue lamda_1 = -219.250 > 0 NOT meeted.
+ Eigenvalue lamda_2 = -150.205 > 0 NOT meeted.
+ Eigenvalue lamda_3 = -109.625 > 0 NOT meeted.
+ 
+ Elastic stability criteria are given in arXiv:1806.04285 (2018).
+ Criteria (i) C11 > 0 is NOT meeted.
+ Criteria (ii) C11 > |C12| is NOT meeted.
+ This 2D-Structure is Mechanically Unstable.
+ 

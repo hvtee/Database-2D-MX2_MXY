@@ -1,0 +1,52 @@
+ o-------------------------- Summary ----------------------------o
+ Crystal System: Hexagonal
+ There are 2 independent elastic constants
+ C11 C12 0
+ C12 C11 0
+ 0 0 C66=(C11-C12)/2
+ 
+ Stiffness Tensor C_ij (in N/m):
+ 43.151 84.727 0.000
+ 84.727 43.151 0.000
+ 0.000 0.000 -20.788
+ Compliance Tensor S_ij (in m/N):
+ -0.008116 0.015936 0.000000
+ 0.015936 -0.008116 0.000000
+ 0.000000 0.000000 -0.048104
+ 
+ Anisotropic mechanical properties of 2D singlecrystal:
+ o---------------------------------------------------------------o
+ | Mechanical Properties | Min | Max | Anisotropy|
+ |---------------------------------------------------------------|
+ | Young's Modulus E (N/m) | -123.211 | -123.211 | 1.000 |
+ | Shear Modulus G (N/m) | -20.788 | -20.788 | 1.000 |
+ | Poisson's Ratio v | 1.964 | 1.964 | 1.000 |
+ o---------------------------------------------------------------o
+ References:
+ [1] Wang V., et al., arXiv:1806.04285 (2018) 
+ 
+ Average mechanical properties of 2D polycrystal:
+ o---------------------------------------------------------------o
+ | Mechanical Properties | Voigt | Reuss | Hill |
+ |---------------------------------------------------------------|
+ | Bulk modulus K (N/m) | 63.939 | 63.939 | 63.939 |
+ | Shear modulus G (N/m) | -20.788 | -20.788 | -20.788 |
+ | Bulk/Shear ratio | -3.076 | -3.076 | -3.076 |
+ o---------------------------------------------------------------o
+ Universal Elastic Anisotropy Index (A_SU): 0.000
+ Kube Anisotropy Index (A_Kube): 0.000
+ K_V/K_R Ratio: 1.000
+ G_V/G_R Ratio: 1.000
+ References:
+ [1] Li R., et al., Extreme Mech. Lett. 34, 100615 (2020)
+ 
+ Eigenvalues of the stiffness matrix (in N/m):
+ Eigenvalue lamda_1 = -41.576 > 0 NOT meeted.
+ Eigenvalue lamda_2 = -20.788 > 0 NOT meeted.
+ Eigenvalue lamda_3 = 127.878 > 0 meeted.
+ 
+ Elastic stability criteria are given in arXiv:1806.04285 (2018).
+ Criteria (i) C11 > 0 is meeted.
+ Criteria (ii) C11 > |C12| is NOT meeted.
+ This 2D-Structure is Mechanically Unstable.
+ 

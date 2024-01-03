@@ -1,0 +1,34 @@
+ Crystal System: Hexagonal
+ There are 2 independent elastic constants: C11 and C12
+ 
+  Stiffness Tensor C_ij (in N/m):
+   -132.397   -118.306      0.000
+   -118.306   -132.397      0.000
+      0.000      0.000     -7.045
+ 
+ Anisotropic mechanical properties of 2D singlecrystal:
+ o---------------------------------------------------------------o
+ |  Mechanical Properties    |    Min    |    Max    | Anisotropy|
+ |---------------------------------------------------------------|
+ |  Young's Modulus E (N/m)  |  -26.681  |  -26.681  |    1.000  |
+ |  Shear Modulus G (N/m)    |   -7.045  |   -7.045  |    1.000  |
+ |  Poisson's Ratio v        |    0.894  |    0.894  |    1.000  |
+ o---------------------------------------------------------------o
+ References:
+ [1] Wang V., et al., arXiv:1806.04285 (2018) 
+ 
+ Average mechanical properties of 2D polycrystal:
+ o---------------------------------------------------------------o
+ |  Mechanical Properties    |   Voigt   |   Reuss   |    Hill   |
+ |---------------------------------------------------------------|
+ |  Bulk modulus K (N/m)     | -125.351  | -125.351  | -125.351  |
+ |  Shear modulus G (N/m)    |   -7.045  |   -7.045  |   -7.045  |
+ |  Bulk/Shear ratio         |   17.792  |   17.792  |   17.792  |
+ o---------------------------------------------------------------o
+ References:
+ [1] Li R., et al., Extreme Mech. Lett. 34, 100615 (2020)
+ 
+ Elastic stability criteria are given in arXiv:1806.04285 (2018).
+ Criteria (i) C11 > 0 is NOT meeted.
+ Criteria (ii) C11 > |C12| is NOT meeted.
+ This 2D-Structure is Mechanically Unstable.

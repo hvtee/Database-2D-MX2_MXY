@@ -1,0 +1,66 @@
+#!/bin/bash
+
+elem=$(cat ./hal)
+file="materials_list"
+
+
+#rm -f nbands_1T_M${elem}.txt nbands_sort_1T_M${elem}.txt nbands_2H_M${elem}.txt nbands_sort_2H_M${elem}.txt
+
+#for var in $(cat $file)
+#do
+#cd ${var}${elem}/bands_1T_U;
+#echo -n "${var}${elem} " >> nbands1_1T_M${elem}.txt
+#grep -i nbands ${var}${elem}/bands_1T_U/OUTCAR >> nbands1_1T_M${elem}.txt;
+#echo -n "${var}${elem} " >> nbands1_2H_M${elem}.txt
+#grep -i nbands ${var}${elem}/bands_2H_U/OUTCAR >> nbands1_2H_M${elem}.txt;
+#done
+
+rm -f b_1T_M${elem}.txt b_2H_M${elem}.txt
+
+for var in $(cat $file)
+do
+cd ./${var}${elem}/bands_2H_U_nc/;
+echo 911 | vaspkit > bands1_info;
+cat ./bands1_info | tail -n 24 | head -n 8 > bands_info;
+echo "${var}${elem} $(cat ./bands_info | tail -n 8 | head -n 1) $(cat ./bands_info | tail -n 7 | head -n 1) $(cat ./bands_info | tail -n 6 | head -n 1) $(cat ./bands_info | tail -n 5 | head -n 1) $(cat ./bands_info | tail -n 4 | head -n 1)" > b1_2H_M${elem}.txt
+sed -e "s/[[:space:]]\+/ /g" b1_2H_M${elem}.txt > b2_2H_M${elem}.txt
+cut -d ' ' -f 4,8,13,18,22 b2_2H_M${elem}.txt > b3_2H_M${elem}.txt
+echo "$(cat ../WF_2H_U/WF_2H | tail -n 18 | head -n 1) $(cat ../WF_2H_U/WF_2H | tail -n 17 | head -n 1)" > WF1_2H_M${elem}.txt
+sed -e "s/[[:space:]]\+/ /g" WF1_2H_M${elem}.txt > WF2_2H_M${elem}.txt
+cut -d ' ' -f 4,8 WF2_2H_M${elem}.txt > WF3_2H_M${elem}.txt
+echo "${var}${elem} $(cat ./b3_2H_M${elem}.txt | head -n 1) $(cat ./WF3_2H_M${elem}.txt | head -n 1)" > Eg1_2H_M${elem}.txt
+rm -f bands1_info bands_info b1_2H_M${elem}.txt b2_2H_M${elem}.txt b3_2H_M${elem}.txt WF1_2H_M${elem}.txt WF2_2H_M${elem}.txt WF3_2H_M${elem}.txt
+cd ..;
+cd ..;
+echo "$(cat ./${var}${elem}/bands_2H_U_nc/Eg1_2H_M${elem}.txt | head -n 1)" >> b1_2H_M${elem}.txt
+
+cd ./${var}${elem}/bands_1T_U_nc/;
+echo 911 | vaspkit > bands1_info;
+cat ./bands1_info | tail -n 24 | head -n 8 > bands_info;
+echo "${var}${elem} $(cat ./bands_info | tail -n 8 | head -n 1) $(cat ./bands_info | tail -n 7 | head -n 1) $(cat ./bands_info | tail -n 6 | head -n 1) $(cat ./bands_info | tail -n 5 | head -n 1) $(cat ./bands_info | tail -n 4 | head -n 1)" > b1_1T_M${elem}.txt
+sed -e "s/[[:space:]]\+/ /g" b1_1T_M${elem}.txt > b2_1T_M${elem}.txt
+cut -d ' ' -f 4,8,13,18,22 b2_1T_M${elem}.txt > b3_1T_M${elem}.txt
+echo "$(cat ../WF_1T_U/WF_1T | tail -n 18 | head -n 1) $(cat ../WF_1T_U/WF_1T | tail -n 17 | head -n 1)" > WF1_1T_M${elem}.txt
+sed -e "s/[[:space:]]\+/ /g" WF1_1T_M${elem}.txt > WF2_1T_M${elem}.txt
+cut -d ' ' -f 4,8 WF2_1T_M${elem}.txt > WF3_1T_M${elem}.txt
+echo "${var}${elem} $(cat ./b3_1T_M${elem}.txt | head -n 1) $(cat ./WF3_1T_M${elem}.txt | head -n 1)" > Eg1_1T_M${elem}.txt
+rm -f bands1_info bands_info b1_1T_M${elem}.txt b2_1T_M${elem}.txt b3_1T_M${elem}.txt WF1_1T_M${elem}.txt WF2_1T_M${elem}.txt WF3_1T_M${elem}.txt
+cd ..;
+cd ..;
+echo "$(cat ./${var}${elem}/bands_1T_U_nc/Eg1_1T_M${elem}.txt | head -n 1)" >> b1_1T_M${elem}.txt
+
+done
+
+
+#sed -e "s/[[:space:]]\+/ /g" b1_1T_M${elem}.txt > b2_1T_M${elem}.txt
+#cut -d ' ' -f 1,16 b2_1T_M${elem}.txt > b_1T_M${elem}.txt
+#sort nbands_1T_M${elem}.txt > nbands_sort_1T_M${elem}.txt
+
+#sed -e "s/[[:space:]]\+/ /g" b1_2H_M${elem}.txt > b2_2H_M${elem}.txt
+#cut -d ' ' -f 1,5,6,7,12,13,14,19,20,21 b2_2H_M${elem}.txt > b3_2H_M${elem}.txt
+#sort nbands_2H_M${elem}.txt > nbands_sort_2H_M${elem}.txt
+echo "Material Character Gap VBM CBM Ef Vac WF" | cat - b1_2H_M${elem}.txt > b_2H_M${elem}.txt
+echo "Material Character Gap VBM CBM Ef Vac WF" | cat - b1_1T_M${elem}.txt > b_1T_M${elem}.txt
+
+
+rm -f b1_1T_M${elem}.txt b2_1T_M${elem}.txt b1_2H_M${elem}.txt b2_2H_M${elem}.txt

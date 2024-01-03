@@ -1,0 +1,13 @@
+           Band Gap (eV):    3.9532      0.0025      0.0025
+  Eigenvalue of VBM (eV):   -3.3718     -3.2256     -3.2256
+  Eigenvalue of CBM (eV):    0.5813     -3.2231     -3.2231
+       Fermi Energy (eV):   -3.2249     -3.2249     -3.2249
+   Highest-Occupied Band:        13        11          11
+  Lowest-Unoccupied Band:        14        13          13
+    Location of VBM (UP):    0.0000      0.0000      0.0000
+    Location of CBM (UP):    0.0000      0.0000      0.0000
+    Location of VBM (DW):    0.0230      0.0230      0.0000
+    Location of CBM (DW):    0.4138      0.1724      0.0000
+    Location of VBM (TO):    0.0230      0.0230      0.0000
+    Location of CBM (TO):    0.4138      0.1724      0.0000
+ ** Notice: A tiny gap implies your system might be metallic. **

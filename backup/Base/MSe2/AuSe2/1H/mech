@@ -1,0 +1,52 @@
+ +-------------------------- Summary ----------------------------+
+ Crystal System: Hexagonal
+ There are 2 independent elastic constants
+ C11 C12 0
+ C12 C11 0
+ 0 0 C66=(C11-C12)/2
+ 
+ Stiffness Tensor C_ij (in N/m):
+ -119.115 -1.883 0.000
+ -1.883 -119.115 0.000
+ 0.000 0.000 -58.616
+ Compliance Tensor S_ij (in m/N):
+ -0.008397 0.000133 0.000000
+ 0.000133 -0.008397 0.000000
+ 0.000000 0.000000 -0.017060
+ 
+ Anisotropic mechanical properties of 2D singlecrystal:
+ +---------------------------------------------------------------+
+ | Mechanical Properties | Min | Max | Anisotropy|
+ +---------------------------------------------------------------+
+ | Young's Modulus E (N/m) | -119.085 | -119.085 | 1.000 |
+ | Shear Modulus G (N/m) | -58.616 | -58.616 | 1.000 |
+ | Poisson's Ratio v | 0.016 | 0.016 | 1.000 |
+ +---------------------------------------------------------------+
+ References:
+ [1] Wang V., et al., arXiv:1806.04285 (2018) 
+ 
+ Average mechanical properties of 2D polycrystal:
+ +---------------------------------------------------------------+
+ | Mechanical Properties | Voigt | Reuss | Hill |
+ +---------------------------------------------------------------+
+ | Bulk modulus K (N/m) | -60.499 | -60.499 | -60.499 |
+ | Shear modulus G (N/m) | -58.616 | -58.616 | -58.616 |
+ | Bulk/Shear ratio | 1.032 | 1.032 | 1.032 |
+ +---------------------------------------------------------------+
+ Universal Elastic Anisotropy Index (A_SU): 0.000
+ Kube Anisotropy Index (A_Kube): 0.000
+ K_V/K_R Ratio: 1.000
+ G_V/G_R Ratio: 1.000
+ References:
+ [1] Li R., et al., Extreme Mech. Lett. 34, 100615 (2020)
+ 
+ Eigenvalues of the stiffness matrix (in N/m):
+ Eigenvalue lamda_1 = -120.997 > 0 NOT meeted.
+ Eigenvalue lamda_2 = -117.232 > 0 NOT meeted.
+ Eigenvalue lamda_3 = -58.616 > 0 NOT meeted.
+ 
+ Elastic stability criteria are given in arXiv:1806.04285 (2018).
+ Criteria (i) C11 > 0 is NOT meeted.
+ Criteria (ii) C11 > |C12| is NOT meeted.
+ This 2D-Structure is Mechanically Unstable.
+ +---------------------------------------------------------------+

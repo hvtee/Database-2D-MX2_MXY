@@ -1,0 +1,13 @@
+            Spin Channel:     <UP>       <DOWN>      <TOTAL>
+           Band Gap (eV):    0.0125      0.0125      0.0125
+  Eigenvalue of VBM (eV):    0.5123      0.5123      0.5123
+  Eigenvalue of CBM (eV):    0.5248      0.5248      0.5248
+       Fermi Energy (eV):    0.5161      0.5161      0.5161
+   Highest-Occupied Band:        20        20          20
+  Lowest-Unoccupied Band:        20        20          20
+    Location of VBM (UP):    0.0690      0.0000      0.0000
+    Location of CBM (UP):    0.0460      0.0460      0.0000
+    Location of VBM (DW):    0.0690      0.0000      0.0000
+    Location of CBM (DW):    0.0460      0.0460      0.0000
+    Location of VBM (TO):    0.0690      0.0000      0.0000
+    Location of CBM (TO):    0.0460      0.0460      0.0000

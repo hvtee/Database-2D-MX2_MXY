@@ -37,12 +37,12 @@ total_magnetization = None
 
 # mechanical
 stiffness_tensor = None
-youngs_modulus = None
-shear_modulus = None
-poisson_ratio = None
-bulk_modulus = None
-shear_modulus_mechanical = None
-bulk_shear_ratio = None
+youngs_modulus = []
+shear_modulus = []
+poisson_ratio = []
+bulk_modulus = []
+shear_modulus_mechanical = []
+bulk_shear_ratio = []
 
 # wf
 vacuum_level = None
@@ -160,6 +160,13 @@ def process_energy_mag_file(filepath):
 def process_mech_file(filepath):
     global stiffness_tensor, youngs_modulus, shear_modulus, poisson_ratio, bulk_modulus, shear_modulus_mechanical, bulk_shear_ratio
 
+    youngs_modulus = []
+    shear_modulus = []
+    poisson_ratio = []
+    bulk_modulus = []
+    shear_modulus_mechanical = []
+    bulk_shear_ratio = []
+
     with open(filepath, 'r') as file:
         content = file.read()
         print(file.name)
@@ -185,85 +192,62 @@ def process_mech_file(filepath):
         # Поиск Anisotropic mechanical properties
         anisotropic_start = lines.index(" Anisotropic mechanical properties of 2D singlecrystal:")
         anisotropic_end = lines.index(" o---------------------------------------------------------------o",
-                                      anisotropic_start)
+                                      anisotropic_start) + 6
         anisotropic_properties_raw = [line.split('|')[1:-1] for line in lines[anisotropic_start + 3:anisotropic_end] if
                                       line.strip()]
 
-        YoungsModulus = []
-        ShearModulusAnis = []
-        PoissonsRatio = []
-        BulkModulus = []
-        ShearModulusAver = []
-        BulkShearRatio = []
-
         for prop in anisotropic_properties_raw:
             prop_values = [item.strip() for item in prop]
-            if prop == 0:
-                YoungsModulus.append({
-                    float(prop_values[1]) if prop_values[1] else None,
-                    float(prop_values[2]) if prop_values[2] else None,
-                    float(prop_values[3]) if prop_values[3] else None
-                })
-            if prop == 1:
-                ShearModulusAnis.append({
-                    float(prop_values[1]) if prop_values[1] else None,
-                    float(prop_values[2]) if prop_values[2] else None,
-                    float(prop_values[3]) if prop_values[3] else None
-                })
-            if prop == 2:
-                PoissonsRatio.append({
-                    float(prop_values[1]) if prop_values[1] else None,
-                    float(prop_values[2]) if prop_values[2] else None,
-                    float(prop_values[3]) if prop_values[3] else None
-                })
+            if prop_values[0] == "Young's Modulus E (N/m)":
+                youngs_modulus.append(
+                    float(prop_values[1]) if prop_values[1] and prop_values[1] != "*********" else None)
+                youngs_modulus.append(
+                    float(prop_values[2]) if prop_values[2] and prop_values[2] != "*********" else None)
+                youngs_modulus.append(
+                    float(prop_values[3]) if prop_values[3] and prop_values[3] != "*********" else None)
+            if prop_values[0] == 'Shear Modulus G (N/m)':
+                shear_modulus.append(
+                    float(prop_values[1]) if prop_values[1] and prop_values[1] != "*********" else None)
+                shear_modulus.append(
+                    float(prop_values[2]) if prop_values[2] and prop_values[2] != "*********" else None)
+                shear_modulus.append(
+                    float(prop_values[3]) if prop_values[3] and prop_values[3] != "*********" else None)
+            if prop_values[0] == "Poisson's Ratio v":
+                poisson_ratio.append(
+                    float(prop_values[1]) if prop_values[1] and prop_values[1] != "*********" else None)
+                poisson_ratio.append(
+                    float(prop_values[2]) if prop_values[2] and prop_values[2] != "*********" else None)
+                poisson_ratio.append(
+                    float(prop_values[3]) if prop_values[3] and prop_values[3] != "*********" else None)
 
         # Поиск Average mechanical properties
         average_start = lines.index(" Average mechanical properties of 2D polycrystal:")
-        average_end = lines.index(" o---------------------------------------------------------------o", average_start)
+        average_end = lines.index(" o---------------------------------------------------------------o",
+                                  average_start) + 6
         average_properties_raw = [line.split('|')[1:-1] for line in lines[average_start + 3:average_end] if
                                   line.strip()]
 
         average_properties = []
         for prop in average_properties_raw:
             prop_values = [item.strip() for item in prop]
-            if prop == 0:
-                BulkModulus.append({
-                    float(prop_values[1]) if prop_values[1] else None,
-                    float(prop_values[2]) if prop_values[2] else None,
-                    float(prop_values[3]) if prop_values[3] else None
-                })
-            if prop == 1:
-                ShearModulusAver.append({
-                    float(prop_values[1]) if prop_values[1] else None,
-                    float(prop_values[2]) if prop_values[2] else None,
-                    float(prop_values[3]) if prop_values[3] else None
-                })
-            if prop == 2:
-                BulkShearRatio.append({
-                    float(prop_values[1]) if prop_values[1] else None,
-                    float(prop_values[2]) if prop_values[2] else None,
-                    float(prop_values[3]) if prop_values[3] else None
-                })
-
-
-
-        BulkModulus = re.search(r"Bulk modulus K \(N/m\) \| ([\d.]+) \| ([\d.]+) \| ([\d.]+) \|", content)
-        if BulkModulus:
-            BulkModulus = [float(match) for match in BulkModulus.groups()]
-        else:
-            BulkModulus = None
-
-        ShearModulusAver = re.search(r"Shear modulus G \(N/m\) \| ([\d.]+) \| ([\d.]+) \| ([\d.]+) \|", content)
-        if ShearModulusAver:
-            ShearModulusAver = [float(match) for match in ShearModulusAver.groups()]
-        else:
-            ShearModulusAver = None
-
-        BulkShearRatio = re.search(r"Bulk/Shear ratio \| ([\d.]+) \| ([\d.]+) \| ([\d.]+) \|", content)
-        if BulkShearRatio:
-            BulkShearRatio = [float(match) for match in BulkShearRatio.groups()]
-        else:
-            BulkShearRatio = None
+            if prop_values[0] == 'Bulk modulus K (N/m)':
+                bulk_modulus.append(float(prop_values[1]) if prop_values[1] and prop_values[1] != "*********" else None)
+                bulk_modulus.append(float(prop_values[2]) if prop_values[2] and prop_values[2] != "*********" else None)
+                bulk_modulus.append(float(prop_values[3]) if prop_values[3] and prop_values[3] != "*********" else None)
+            if prop_values[0] == 'Shear modulus G (N/m)':
+                shear_modulus_mechanical.append(
+                    float(prop_values[1]) if prop_values[1] and prop_values[1] != "*********" else None)
+                shear_modulus_mechanical.append(
+                    float(prop_values[2]) if prop_values[2] and prop_values[2] != "*********" else None)
+                shear_modulus_mechanical.append(
+                    float(prop_values[3]) if prop_values[3] and prop_values[3] != "*********" else None)
+            if prop_values[0] == 'Bulk/Shear ratio':
+                bulk_shear_ratio.append(
+                    float(prop_values[1]) if prop_values[1] and prop_values[1] != "*********" else None)
+                bulk_shear_ratio.append(
+                    float(prop_values[2]) if prop_values[2] and prop_values[2] != "*********" else None)
+                bulk_shear_ratio.append(
+                    float(prop_values[3]) if prop_values[3] and prop_values[3] != "*********" else None)
 
 
 def process_wf_file(filepath):

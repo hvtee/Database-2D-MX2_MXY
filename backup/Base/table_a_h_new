@@ -1,0 +1,28 @@
+#!/bin/bash
+
+elem=$(cat ./hal)
+file="materials_list"
+
+for hal in $(cat ./halcs)
+do
+cd M${hal};
+for var in $(cat ./materials_list)
+do
+cd ${var}${hal}/static_1T_U
+echo 929 | vaspkit > a_1T
+cat a_1T | tail -n 28 | head -n 13  > a_h_1T
+sed -e "s/[[:space:]]\+/ /g" a_h_1T > a_h
+cp a_h /home/user/2D_materials/Base/M${hal}/${var}${hal}/1T/a_h
+cd ..;
+cd ..;
+cd ${var}${hal}/static_2H_U
+echo 929 | vaspkit > a_1H
+cat a_1H | tail -n 28 | head -n 13  > a_h_1H
+sed -e "s/[[:space:]]\+/ /g" a_h_1H > a_h
+cp a_h /home/user/2D_materials/Base/M${hal}/${var}${hal}/1H/a_h
+cd ..;
+cd ..;
+done
+cd ..;
+done
+
